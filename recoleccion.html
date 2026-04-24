@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EcoDistrito - Recolección</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body class="dashboard">
+
+  <div class="container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Barra lateral de navegación">
+      <div class="logoBox">
+        <img src="Imagenes/Logo sin fondo.png" alt="Logo EcoDistrito">
+      </div>
+
+      <nav aria-label="Menú principal">
+        <ul>
+          <li class="active" role="menuitem"><a href="dashboard.html" class="nav-link"><i class="fa fa-home"></i> Inicio</a></li>
+          <li class="active" role="menuitem"><a href="rutas.html" class="nav-link"><i class="fa fa-route"></i> Rutas</a></li>
+          <li class="active" role="menuitem"><a href="recoleccion.html" class="nav-link"><i class="fa fa-recycle"></i> Recolección</a></li>
+          <li class="active" role="menuitem"><a href="mapas.html" class="nav-link"><i class="fa fa-map"></i> Mapas</a></li>
+          <li class="active" role="menuitem"><a href="reportes.html" class="nav-link"><i class="fa fa-file"></i> Reportes</a></li>
+        </ul>
+      </nav>
+
+      <button onclick="logout()" class="btn" aria-label="Cerrar sesión">Salir</button>
+
+    <script>
+        function logout() {
+            try {
+    // Limpia almacenamiento local/session si corresponde
+            localStorage.removeItem('token');
+             sessionStorage.clear();
+                } catch (e) {
+            console.warn('No se pudo limpiar almacenamiento local', e);
+             }
+
+  // Redirigir al login
+  window.location.href = 'login.html';
+        }
+    </script>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div class="top">
+        <div>
+          <h2>Recolección</h2>
+          <p>Resumen de residuos y recolecciones</p>
+        </div>
+      </div>
+
+      <!-- Resumen: tarjetas -->
+      <div class="cards" id="summaryCards" style="margin-bottom:14px;">
+        <div class="card" id="card-totalKg"><h3>0 kg</h3><p>Total recolectado (hoy)</p></div>
+        <div class="card" id="card-count"><h3>0</h3><p>Recolecciones hoy</p></div>
+        <div class="card" id="card-org"><h3>0 kg</h3><p>Orgánico</p></div>
+        <div class="card" id="card-plast"><h3>0 kg</h3><p>Plástico</p></div>
+        <div class="card" id="card-vidrio"><h3>0 kg</h3><p>Vidrio</p></div>
+      </div>
+
+      <!-- Controles: filtros + formulario -->
+      <div class="controls" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;align-items:center;">
+        <div style="display:flex;gap:8px;align-items:center;">
+          <label for="filterTipo">Tipo:</label>
+          <select id="filterTipo">
+            <option value="">Todos</option>
+            <option value="Orgánico">Orgánico</option>
+            <option value="Plástico">Plástico</option>
+            <option value="Vidrio">Vidrio</option>
+          </select>
+        </div>
+
+        <div style="display:flex;gap:8px;align-items:center;">
+          <label for="desde">Desde</label>
+          <input type="date" id="desde" />
+          <label for="hasta">Hasta</label>
+          <input type="date" id="hasta" />
+        </div>
+
+        <div style="display:flex;gap:8px;align-items:center;">
+          <label for="searchReco">Buscar</label>
+          <input id="searchReco" placeholder="Ruta o nota" />
+        </div>
+
+        <!-- Formulario agregar recolección -->
+        <form id="addRecoForm" style="margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+  <!-- Fecha -->
+  <input name="fechaISO" type="datetime-local" required />
+
+  <!-- Ruta -->
+  <select name="rutaId" id="selectRuta" required style="min-width:200px">
+    <option value="">-- Seleccione ruta --</option>
+    <!-- opciones dinámicas desde la API -->
+  </select>
+
+  <!-- Tipo -->
+  <select name="tipo" required>
+    <option value="Orgánico">Orgánico</option>
+    <option value="Plástico">Plástico</option>
+    <option value="Vidrio">Vidrio</option>
+  </select>
+
+  <!-- Cantidad -->
+  <input name="cantidadKg" type="number" step="0.1" placeholder="kg" required style="width:90px" />
+
+  <!-- Coordenadas opcionales -->
+  <input name="coords" placeholder="lat,lng" style="width:160px" />
+
+  <!-- Botón -->
+  <button type="submit" class="btn small">Agregar</button>
+</form>
+
+
+      </div>
+
+
+
+      <!-- Tabla + gráfico + mapa -->
+      <div class="grid">
+        <section class="box" style="min-height:420px;">
+  <h3>Historial / Tabla</h3>
+  <div class="table-wrap">
+    <table id="recoTable" class="routes-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Ruta</th>
+          <th>Tipo</th>
+          <th>Cantidad (kg)</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:12px">Historial (últimos 7 días)</h3>
+  <canvas id="recoChart" style="max-height:220px"></canvas>
+</section>
+
+
+        <aside class="box">
+          <h3>Mapa de Recolecciones</h3>
+          <div id="mapReco" style="height:420px;border-radius:8px;"></div>
+          <div id="recoDetail" style="margin-top:10px"></div>
+        </aside>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="recoleccion.js"></script>
+</body>
+</html>

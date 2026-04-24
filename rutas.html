@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EcoDistrito - Rutas</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body class="dashboard">
+
+  <div class="container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Barra lateral de navegación">
+      <div class="logoBox">
+        <img src="Imagenes/Logo sin fondo.png" alt="Logo EcoDistrito">
+      </div>
+
+      <nav aria-label="Menú principal">
+        <ul>
+          <li class="active" role="menuitem"><a href="dashboard.html" class="nav-link"><i class="fa fa-home"></i> Inicio</a></li>
+          <li class="active" role="menuitem"><a href="rutas.html" class="nav-link"><i class="fa fa-route"></i> Rutas</a></li>
+          <li class="active" role="menuitem"><a href="recoleccion.html" class="nav-link"><i class="fa fa-recycle"></i> Recolección</a></li>
+          <li class="active" role="menuitem"><a href="mapas.html" class="nav-link"><i class="fa fa-map"></i> Mapas</a></li>
+          <li class="active" role="menuitem"><a href="reportes.html" class="nav-link"><i class="fa fa-file"></i> Reportes</a></li>
+          <li class="active" role="menuitem"><a href="administracion.html" class="nav-link"><i class="fa fa-cog"></i> Administración</a></li>
+        </ul>
+      </nav>
+
+      <button onclick="logout()" class="btn" aria-label="Cerrar sesión">Salir</button>
+
+    <script>
+        function logout() {
+            try {
+    // Limpia almacenamiento local/session si corresponde
+            localStorage.removeItem('token');
+             sessionStorage.clear();
+                } catch (e) {
+            console.warn('No se pudo limpiar almacenamiento local', e);
+             }
+
+  // Redirigir al login
+  window.location.href = 'login.html';
+        }
+    </script>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div class="top">
+        <div>
+          <h2>Rutas y Sectores</h2>
+          <p>Horarios y sectores de recolección</p>
+        </div>
+
+        <div class="top-icons">
+          <i class="fa fa-filter" title="Filtros"></i>
+        </div>
+      </div>
+
+
+      <!-- Tabla y mapa -->
+      <div class="grid">
+        <section class="box" id="routes-list">
+          <h3>Listado de Rutas</h3>
+
+          <div class="table-wrap">
+            <table id="routesTable" class="routes-table" aria-label="Tabla de rutas">
+              <thead>
+                <tr>
+                  <th>Ruta</th>
+                  <th>Sectores</th>
+                  <th>Días</th>
+                  <th>Horario</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- filas generadas por JS -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <aside class="box" id="routes-map">
+          <h3>Mapa de Rutas</h3>
+          <div id="mapRoutes" style="height:420px;border-radius:8px;"></div>
+          <div id="routeDetail" style="margin-top:12px;"></div>
+        </aside>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="rutas.js"></script>
+</body>
+</html>

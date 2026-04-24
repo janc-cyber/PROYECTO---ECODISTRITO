@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>EcoDistrito Dashboard</title>
+
+<link rel="stylesheet" href="styles.css">
+
+<!-- ICONOS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+
+<!-- MAPA -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<script src="dashboard.js"></script>
+
+<!-- Librerías: Chart.js y Leaflet JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Tus scripts (asegúrate que usan DOMContentLoaded o comprueban existencia de elementos) -->
+<script src="dashboard.js"></script>
+<script src="mapas.js"></script>
+<script src="reportes.js"></script>
+<script src="administracion.js"></script>
+
+</body>
+</html>
+
+</head>
+
+<body class="dashboard">
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Barra lateral de navegación">
+      <div class="logoBox">
+        <img src="Imagenes/Logo sin fondo.png" alt="Logo EcoDistrito">
+      </div>
+
+      <nav class="menuside" aria-label="Menú principal">
+        <ul>
+          <li class="active" role="menuitem"><a href="dashboard.html" class="nav-link"><i class="fa fa-home"></i> Inicio</a></li>
+          <li class="active" role="menuitem"><a href="rutas.html" class="nav-link"><i class="fa fa-route"></i> Rutas</a></li>
+          <li class="active" role="menuitem"><a href="recoleccion.html" class="nav-link"><i class="fa fa-recycle"></i> Recolección</a></li>
+          <li class="active" role="menuitem"><a href="mapas.html" class="nav-link"><i class="fa fa-map"></i> Mapas</a></li>
+          <li class="active" role="menuitem"><a href="reportes.html" class="nav-link"><i class="fa fa-file"></i> Reportes</a></li>
+        </ul>
+      
+    </nav>
+
+          <button onclick="logout()" class="btn" aria-label="Cerrar sesión">Salir</button>
+
+    <script>
+        function logout() {
+            try {
+    // Limpia almacenamiento local/session si corresponde
+            localStorage.removeItem('token');
+             sessionStorage.clear();
+                } catch (e) {
+            console.warn('No se pudo limpiar almacenamiento local', e);
+             }
+
+  // Redirigir al login
+  window.location.href = 'login.html';
+        }
+    </script>
+
+    </aside>
+
+</script>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOP -->
+        <div class="top">
+            <div>
+                <h2>Bienvenido de vuelta, Administrador</h2>
+                <p>Dashboard principal</p>
+            </div>
+
+            <div class="top-icons">
+                <i class="fa fa-bell"></i>
+                <i class="fa fa-user-circle"></i>
+            </div>
+        </div>
+
+        <!-- CARDS -->
+        <div class="cards">
+            <div class="card">
+                🚛
+                <h3>24</h3>
+                <p>Rutas</p>
+            </div>
+
+            <div class="card">
+                📅
+                <h3>187</h3>
+                <p>Recolecciones hoy</p>
+            </div>
+
+            <div class="card">
+                🗑️
+                <h3>356.8 t</h3>
+                <p>Residuos recolectados</p>
+            </div>
+
+            <div class="card">
+                📊
+                <h3>8%</h3>
+                <p>Reciclaje promedio</p>
+            </div>
+        </div>
+
+        <!-- GRID -->
+        <div class="grid">
+
+            <!-- GRAFICA -->
+            <div class="box">
+                <h3>Estadísticas de Recolección</h3>
+                <canvas id="grafica"></canvas>
+                <button class="btn">Ver Reporte</button>
+            </div>
+
+            <!-- MAPA -->
+            <div class="box">
+                <h3>Rutas de Hoy</h3>
+                <div id="map"></div>
+
+                <div class="legend">
+                    <span class="verde"></span> Completada
+                    <span class="amarillo"></span> En curso
+                    <span class="rojo"></span> Incidente
+                </div>
+            </div>
+
+        </div>
+
+        <!-- BOTTOM -->
+        <div class="grid">
+
+            <div class="box">
+                <h3>Tareas Pendientes</h3>
+
+                <p>Inspección de camiones 49%</p>
+                <div class="progress"><div style="width:49%"></div></div>
+
+                <p>Capacitación 60%</p>
+                <div class="progress"><div style="width:60%"></div></div>
+            </div>
+
+            <div class="box">
+                <h3>Últimos Incidentes</h3>
+
+                <p>🔴 Camión averiado</p>
+                <p>🟡 Tráfico</p>
+                <p>🔴 Contenedor lleno</p>
+            </div>
+
+        </div>
+
+    </main>
+</div>
+
+
+</body>
+</html>

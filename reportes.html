@@ -1,0 +1,80 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EcoDistrito - Reportes</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body class="dashboard">
+  <div class="container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Barra lateral de navegación">
+      <div class="logoBox">
+        <img src="Imagenes/Logo sin fondo.png" alt="Logo EcoDistrito">
+      </div>
+
+      <nav aria-label="Menú principal">
+        <ul>
+          <li class="active" role="menuitem"><a href="dashboard.html" class="nav-link"><i class="fa fa-home"></i> Inicio</a></li>
+          <li class="active" role="menuitem"><a href="rutas.html" class="nav-link"><i class="fa fa-route"></i> Rutas</a></li>
+          <li class="active" role="menuitem"><a href="recoleccion.html" class="nav-link"><i class="fa fa-recycle"></i> Recolección</a></li>
+          <li class="active" role="menuitem"><a href="mapas.html" class="nav-link"><i class="fa fa-map"></i> Mapas</a></li>
+          <li class="active" role="menuitem"><a href="reportes.html" class="nav-link"><i class="fa fa-file"></i> Reportes</a></li>
+        </ul>
+      </nav>
+
+      <button onclick="logout()" class="btn" aria-label="Cerrar sesión">Salir</button>
+
+    <script>
+        function logout() {
+            try {
+    // Limpia almacenamiento local/session si corresponde
+            localStorage.removeItem('token');
+             sessionStorage.clear();
+                } catch (e) {
+            console.warn('No se pudo limpiar almacenamiento local', e);
+             }
+
+  // Redirigir al login
+  window.location.href = 'login.html';
+        }
+    </script>
+
+    </aside>
+
+    <main class="main">
+      <div class="top"><div><h2>Reportes</h2><p>Gráficas y exportación</p></div></div>
+
+      <div class="controls" style="display:flex;gap:12px;align-items:center;margin-bottom:12px;">
+        <label for="periodReport">Periodo:</label>
+        <select id="periodReport"><option value="daily">Día</option><option value="weekly" selected>Semana</option><option value="monthly">Mes</option></select>
+        <button id="btnExportCSV" class="btn small" style="margin-left:auto">Exportar CSV</button>
+        <button id="btnExportPDF" class="btn small">Exportar PDF</button>
+      </div>
+
+      <div class="grid">
+        <section class="box">
+          <h3>kg recolectados (serie)</h3>
+          <canvas id="reportChart" style="max-height:300px"></canvas>
+        </section>
+
+        <aside class="box">
+          <h3>Indicadores</h3>
+          <p>% Reciclaje: <strong id="indRec">0%</strong></p>
+          <p>Eficiencia (recolecciones/plan): <strong id="indEff">--</strong></p>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="reportes.js"></script>
+</body>
+</html>
