@@ -1,80 +1,109 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>EcoDistrito - Administración</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="dashboard">
-  <div class="container">
-    <!-- SIDEBAR -->
-    <aside class="sidebar" aria-label="Barra lateral de navegación">
-      <div class="logoBox">
-        <img src="Imagenes/Logo sin fondo.png" alt="Logo EcoDistrito">
+<div class="container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" aria-label="Barra lateral de navegación">
+    <div class="logoBox">
+      <img src="Imagenes/Logo sin fondo.png" alt="Logo EcoDistrito">
+    </div>
+    <nav aria-label="Menú principal">
+      <ul>
+        <li>               <a href="dashboard.html"     class="nav-link"><i class="fas fa-home"></i>     Inicio</a></li>
+        <li>               <a href="rutas.html"         class="nav-link"><i class="fas fa-route"></i>    Rutas</a></li>
+        <li>               <a href="recoleccion.html"   class="nav-link"><i class="fas fa-recycle"></i>  Recolección</a></li>
+        <li>               <a href="mapas.html"         class="nav-link"><i class="fas fa-map"></i>      Mapas</a></li>
+        <li>               <a href="reportes.html"      class="nav-link"><i class="fas fa-file-alt"></i> Reportes</a></li>
+        <li class="active"><a href="administracion.html" class="nav-link"><i class="fas fa-cog"></i>     Administración</a></li>
+      </ul>
+    </nav>
+    <button onclick="logout()" class="btn" aria-label="Cerrar sesión">Salir</button>
+  </aside>
+
+  <!-- ✅ CORREGIDO: <main> ahora tiene su etiqueta de cierre -->
+  <main class="main">
+    <div class="top">
+      <div><h2>Administración</h2><p>Gestión de usuarios del sistema</p></div>
+    </div>
+
+    <!-- Formulario crear usuario -->
+    <div class="controls" style="margin-bottom:16px;">
+      <form id="addUserForm" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <input name="name"  placeholder="Nombre completo" required style="min-width:140px;">
+        <input name="email" placeholder="Correo electrónico" type="email" required style="min-width:190px;">
+        <select name="role" required>
+          <option value="Administrador">Administrador</option>
+          <option value="Operador">Operador</option>
+          <option value="Supervisor">Supervisor</option>
+        </select>
+        <button class="btn small" type="submit">
+          <i class="fas fa-plus"></i> Crear usuario
+        </button>
+      </form>
+    </div>
+
+    <!-- Tabla de usuarios -->
+    <section class="box">
+      <h3>Usuarios del Sistema</h3>
+      <div class="table-wrap">
+        <table id="usersTable" class="routes-table" aria-label="Tabla de usuarios">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Creado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- generado por administracion.js -->
+          </tbody>
+        </table>
       </div>
-
-      <nav aria-label="Menú principal">
-        <ul>
-          <li class="active"><a href="dashboard.html" class="nav-link"><i class="fa fa-home"></i> Inicio</a></li>
-          <li class="active"><a href="rutas.html" class="nav-link"><i class="fa fa-route"></i> Rutas</a></li>
-          <li class="active"><a href="recoleccion.html" class="nav-link"><i class="fa fa-recycle"></i> Recolección</a></li>
-          <li class="active"><a href="mapas.html" class="nav-link"><i class="fa fa-map"></i> Mapas</a></li>
-          <li class="active"><a href="reportes.html" class="nav-link"><i class="fa fa-file"></i> Reportes</a></li>
-          <li class="active"><a href="administracion.html" class="nav-link"><i class="fa fa-cog"></i> Administración</a></li>
-        </ul>
-      </nav>
-
-      <button onclick="logout()" class="btn" aria-label="Cerrar sesión">Salir</button>
-      <script>
-        function logout() {
-          try {
-            localStorage.removeItem('token');
-            sessionStorage.clear();
-          } catch (e) {
-            console.warn('No se pudo limpiar almacenamiento local', e);
-          }
-          window.location.href = 'login.html';
-        }
-      </script>
-    </aside>
-
-    <!-- MAIN -->
-    <main class="main">
-      <div class="top"><div><h2>Administración</h2><p>Gestión de usuarios y configuración</p></div></div>
-
-
-      <div class="controls" style="display:flex;gap:12px;align-items:center;margin-bottom:12px;">
-  <form id="addUserForm" style="display:flex;gap:8px;align-items:center;">
-    <input name="name" placeholder="Nombre" required />
-    <input name="email" placeholder="Email" required />
-    <select name="role" required>
-      <option value="Administrador">Administrador</option>
-      <option value="Operador">Operador</option>
-    </select>
-    <button class="btn small" type="submit">Crear usuario</button>
-  </form>
+    </section>
+  </main>
 </div>
 
-<section class="box">
-  <h3>Usuarios</h3>
-  <div class="table-wrap">
-    <table id="usersTable" class="routes-table">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Email</th>
-          <th>Rol</th>
-          <th>Creado</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+<!-- ✅ NUEVO: Modal de edición de usuario (antes faltaba completamente) -->
+<div id="editModal" class="modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-content">
+    <h3 id="modalTitle">Editar Usuario</h3>
+    <form id="editUserForm">
+      <input type="hidden" name="id">
+      <label style="font-size:13px;color:#555;">Nombre</label>
+      <input name="name"  placeholder="Nombre completo"     required>
+      <label style="font-size:13px;color:#555;">Email</label>
+      <input name="email" placeholder="Correo" type="email" required>
+      <label style="font-size:13px;color:#555;">Rol</label>
+      <select name="role" required>
+        <option value="Administrador">Administrador</option>
+        <option value="Operador">Operador</option>
+        <option value="Supervisor">Supervisor</option>
+      </select>
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button type="submit" class="btn small" style="flex:1;">
+          <i class="fas fa-save"></i> Guardar
+        </button>
+        <button type="button" class="btn small" onclick="closeModal()"
+          style="flex:1;background:linear-gradient(180deg,#888,#666);">
+          Cancelar
+        </button>
+      </div>
+    </form>
   </div>
-</section>
+</div>
 
-  <script src="administracion.js"></script>
+<!-- ✅ CORREGIDO: scripts al final del body, no dentro de <section> -->
+<script src="common.js"></script>
+<script src="administracion.js"></script>
 </body>
 </html>

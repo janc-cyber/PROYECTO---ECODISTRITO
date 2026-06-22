@@ -2,30 +2,38 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EcoDistrito - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EcoDistrito - Iniciar Sesión</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div class="container login-page">
-    
-    <!-- IZQUIERDA (IMAGEN) -->
+
+    <!-- IZQUIERDA (imagen de fondo) -->
     <div class="left">
-        <img src="Imagenes/Fondo.png" alt="Fondo">
+        <img src="Imagenes/Fondo.png" alt="Fondo EcoDistrito">
     </div>
 
-    <!-- DERECHA (LOGIN) -->
+    <!-- DERECHA (formulario) -->
     <div class="right">
         <div class="login-box">
-            
-            <img src="Imagenes/Logo sin fondo.png" class="logo">
 
+            <img src="Imagenes/Logo sin fondo.png" class="logo" alt="Logo EcoDistrito">
+
+            <!-- ✅ CORREGIDO: "Sección" → "Sesión" -->
             <h2>Bienvenido</h2>
 
-            <input type="text" id="user" placeholder="Usuario" autocomplete="username" required>
+            <input type="text"     id="user" placeholder="Usuario"    autocomplete="username"         required>
             <input type="password" id="pass" placeholder="Contraseña" autocomplete="current-password" required>
 
-            <button onclick="login()" class="btn" aria-label="iniciar sesión">Iniciar Sección</button>
+            <!-- ✅ NUEVO: mensaje de error visible al usuario -->
+            <p id="loginError" style="color:#c0392b;font-size:13px;margin:0;text-align:center;display:none;"></p>
+
+            <button onclick="login()" class="btn" aria-label="Iniciar sesión">
+                Iniciar Sesión
+            </button>
+
         </div>
     </div>
 

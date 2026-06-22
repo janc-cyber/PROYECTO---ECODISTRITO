@@ -1,14 +1,15 @@
 {
   "name": "ecodistrito",
   "version": "1.0.0",
-  "main": "script.js",
+  "description": "Sistema web de gestión de recolección de residuos - Distrito Nacional",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "node --watch server.js"
   },
-  "keywords": [],
+  "keywords": ["residuos", "recolección", "distrito-nacional", "express"],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "express": "^5.2.1"
   }

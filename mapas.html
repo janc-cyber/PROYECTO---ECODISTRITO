@@ -1,83 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>EcoDistrito - Mapas</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body class="dashboard">
-  <div class="container">
+<div class="container">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar" aria-label="Barra lateral de navegación">
-      <div class="logoBox">
-        <img src="Imagenes/Logo sin fondo.png" alt="Logo EcoDistrito">
-      </div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" aria-label="Barra lateral de navegación">
+    <div class="logoBox">
+      <img src="Imagenes/Logo sin fondo.png" alt="Logo EcoDistrito">
+    </div>
+    <nav aria-label="Menú principal">
+      <ul>
+        <li>               <a href="dashboard.html"     class="nav-link"><i class="fas fa-home"></i>     Inicio</a></li>
+        <li>               <a href="rutas.html"         class="nav-link"><i class="fas fa-route"></i>    Rutas</a></li>
+        <li>               <a href="recoleccion.html"   class="nav-link"><i class="fas fa-recycle"></i>  Recolección</a></li>
+        <li class="active"><a href="mapas.html"         class="nav-link"><i class="fas fa-map"></i>      Mapas</a></li>
+        <li>               <a href="reportes.html"      class="nav-link"><i class="fas fa-file-alt"></i> Reportes</a></li>
+        <li>               <a href="administracion.html" class="nav-link"><i class="fas fa-cog"></i>     Administración</a></li>
+      </ul>
+    </nav>
+    <button onclick="logout()" class="btn" aria-label="Cerrar sesión">Salir</button>
+  </aside>
 
-      <nav aria-label="Menú principal">
-        <ul>
-          <li class="active" role="menuitem"><a href="dashboard.html" class="nav-link"><i class="fa fa-home"></i> Inicio</a></li>
-          <li class="active" role="menuitem"><a href="rutas.html" class="nav-link"><i class="fa fa-route"></i> Rutas</a></li>
-          <li class="active" role="menuitem"><a href="recoleccion.html" class="nav-link"><i class="fa fa-recycle"></i> Recolección</a></li>
-          <li class="active" role="menuitem"><a href="mapas.html" class="nav-link"><i class="fa fa-map"></i> Mapas</a></li>
-          <li class="active" role="menuitem"><a href="reportes.html" class="nav-link"><i class="fa fa-file"></i> Reportes</a></li>
-        </ul>
-      </nav>
+  <main class="main">
+    <div class="top">
+      <div><h2>Mapas</h2><p>Vista del Distrito Nacional en tiempo real</p></div>
+    </div>
 
-      <button onclick="logout()" class="btn" aria-label="Cerrar sesión">Salir</button>
+    <div class="controls" style="display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
+      <label for="filterZona">Zona:</label>
+      <select id="filterZona">
+        <option value="">Todas</option>
+        <option value="Centro">Centro</option>
+        <option value="Norte">Norte</option>
+        <option value="Este">Este</option>
+      </select>
 
-    <script>
-        function logout() {
-            try {
-    // Limpia almacenamiento local/session si corresponde
-            localStorage.removeItem('token');
-             sessionStorage.clear();
-                } catch (e) {
-            console.warn('No se pudo limpiar almacenamiento local', e);
-             }
+      <label for="filterTipoMap">Tipo:</label>
+      <select id="filterTipoMap">
+        <option value="">Todos</option>
+        <option value="contenedor">Contenedor</option>
+        <option value="camion">Camión</option>
+        <option value="incidente">Incidente</option>
+      </select>
 
-  // Redirigir al login
-  window.location.href = 'login.html';
-        }
-    </script>
+      <input id="searchMap" placeholder="Buscar por ID o nota" style="margin-left:auto;">
+    </div>
 
-    </aside>
+    <div class="grid">
+      <section class="box" style="min-height:560px;">
+        <h3>Mapa del Distrito</h3>
+        <div id="mapFull" style="height:480px;border-radius:8px;"></div>
+        <div class="legend" style="margin-top:10px;">
+          <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#2fa84f;margin-right:5px;vertical-align:middle;"></span> Contenedor (bajo)
+          <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#f0b429;margin-right:5px;margin-left:10px;vertical-align:middle;"></span> Contenedor (medio)
+          <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#ff4d4d;margin-right:5px;margin-left:10px;vertical-align:middle;"></span> Contenedor (lleno)
+          <span style="margin-left:10px;vertical-align:middle;">🚛</span> Camión
+          <span style="margin-left:10px;vertical-align:middle;">⚠️</span> Incidente
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
 
-    <main class="main">
-      <div class="top">
-        <div><h2>Mapas</h2><p>Vista completa del Distrito Nacional</p></div>
-      </div>
-
-      <div class="controls" style="display:flex;gap:12px;align-items:center;margin-bottom:12px;">
-        <label for="filterZona">Zona:</label>
-        <select id="filterZona"><option value="">Todas</option><option>Centro</option><option>Norte</option><option>Este</option></select>
-
-        <label for="filterTipoMap">Tipo:</label>
-        <select id="filterTipoMap"><option value="">Todos</option><option value="contenedor">Contenedor</option><option value="camion">Camión</option><option value="incidente">Incidente</option></select>
-
-        <input id="searchMap" placeholder="Buscar por id o nota" style="margin-left:auto" />
-      </div>
-
-      <div class="grid">
-        <section class="box" style="min-height:520px;">
-          <h3>Mapa del Distrito</h3>
-          <div id="mapFull" style="height:480px;border-radius:8px;"></div>
-          <div class="legend" style="margin-top:8px;">
-            <span style="background:#2fa84f"></span> Contenedor (bajo)
-            <span style="background:#f0b429"></span> Contenedor (medio)
-            <span style="background:#ff4d4d"></span> Contenedor (lleno)
-            <span style="background:#4c9aff"></span> Camión
-            <span style="background:#ff6b6b"></span> Incidente
-          </div>
-        </section>
-      </div>
-    </main>
-  </div>
-
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="mapas.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="common.js"></script>
+<script src="mapas.js"></script>
 </body>
 </html>

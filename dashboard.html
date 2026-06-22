@@ -1,34 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>EcoDistrito Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EcoDistrito - Dashboard</title>
 
-<link rel="stylesheet" href="styles.css">
-
-<!-- ICONOS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
-
-<!-- MAPA -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-
-<script src="dashboard.js"></script>
-
-<!-- Librerías: Chart.js y Leaflet JS -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<!-- Tus scripts (asegúrate que usan DOMContentLoaded o comprueban existencia de elementos) -->
-<script src="dashboard.js"></script>
-<script src="mapas.js"></script>
-<script src="reportes.js"></script>
-<script src="administracion.js"></script>
-
-</body>
-</html>
-
+  <!-- ✅ CORREGIDO: todos los <link> en <head> -->
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 
+<!-- ✅ CORREGIDO: <body> dentro de <body>, no antes de </head> -->
 <body class="dashboard">
 
 <div class="container">
@@ -39,37 +22,20 @@
         <img src="Imagenes/Logo sin fondo.png" alt="Logo EcoDistrito">
       </div>
 
-      <nav class="menuside" aria-label="Menú principal">
+      <!-- ✅ CORREGIDO: solo la página actual tiene class="active" -->
+      <nav aria-label="Menú principal">
         <ul>
-          <li class="active" role="menuitem"><a href="dashboard.html" class="nav-link"><i class="fa fa-home"></i> Inicio</a></li>
-          <li class="active" role="menuitem"><a href="rutas.html" class="nav-link"><i class="fa fa-route"></i> Rutas</a></li>
-          <li class="active" role="menuitem"><a href="recoleccion.html" class="nav-link"><i class="fa fa-recycle"></i> Recolección</a></li>
-          <li class="active" role="menuitem"><a href="mapas.html" class="nav-link"><i class="fa fa-map"></i> Mapas</a></li>
-          <li class="active" role="menuitem"><a href="reportes.html" class="nav-link"><i class="fa fa-file"></i> Reportes</a></li>
+          <li class="active"><a href="dashboard.html"    class="nav-link"><i class="fas fa-home"></i>     Inicio</a></li>
+          <li>              <a href="rutas.html"         class="nav-link"><i class="fas fa-route"></i>    Rutas</a></li>
+          <li>              <a href="recoleccion.html"   class="nav-link"><i class="fas fa-recycle"></i>  Recolección</a></li>
+          <li>              <a href="mapas.html"         class="nav-link"><i class="fas fa-map"></i>      Mapas</a></li>
+          <li>              <a href="reportes.html"      class="nav-link"><i class="fas fa-file-alt"></i> Reportes</a></li>
+          <li>              <a href="administracion.html" class="nav-link"><i class="fas fa-cog"></i>     Administración</a></li>
         </ul>
-      
-    </nav>
+      </nav>
 
-          <button onclick="logout()" class="btn" aria-label="Cerrar sesión">Salir</button>
-
-    <script>
-        function logout() {
-            try {
-    // Limpia almacenamiento local/session si corresponde
-            localStorage.removeItem('token');
-             sessionStorage.clear();
-                } catch (e) {
-            console.warn('No se pudo limpiar almacenamiento local', e);
-             }
-
-  // Redirigir al login
-  window.location.href = 'login.html';
-        }
-    </script>
-
-    </aside>
-
-</script>
+      <!-- ✅ CORREGIDO: logout() definido en common.js, no inline -->
+      <button onclick="logout()" class="btn" aria-label="Cerrar sesión">Salir</button>
     </aside>
 
     <!-- MAIN -->
@@ -81,90 +47,81 @@
                 <h2>Bienvenido de vuelta, Administrador</h2>
                 <p>Dashboard principal</p>
             </div>
-
             <div class="top-icons">
-                <i class="fa fa-bell"></i>
-                <i class="fa fa-user-circle"></i>
+                <i class="fas fa-bell"></i>
+                <i class="fas fa-user-circle"></i>
             </div>
         </div>
 
-        <!-- CARDS -->
+        <!-- ✅ MEJORADO: Cards con datos en tiempo real desde la API -->
         <div class="cards">
             <div class="card">
                 🚛
-                <h3>24</h3>
-                <p>Rutas</p>
+                <h3 id="cardRutas">--</h3>
+                <p>Rutas activas</p>
             </div>
-
             <div class="card">
                 📅
-                <h3>187</h3>
+                <h3 id="cardRecolecciones">--</h3>
                 <p>Recolecciones hoy</p>
             </div>
-
             <div class="card">
                 🗑️
-                <h3>356.8 t</h3>
-                <p>Residuos recolectados</p>
+                <h3 id="cardKg">-- kg</h3>
+                <p>Residuos esta semana</p>
             </div>
-
             <div class="card">
                 📊
-                <h3>8%</h3>
-                <p>Reciclaje promedio</p>
+                <h3 id="cardReciclaje">--%</h3>
+                <p>Reciclaje (semana)</p>
             </div>
         </div>
 
-        <!-- GRID -->
+        <!-- GRID: gráfica + mapa -->
         <div class="grid">
-
-            <!-- GRAFICA -->
             <div class="box">
-                <h3>Estadísticas de Recolección</h3>
+                <h3>Estadísticas de Recolección (últimos 7 días)</h3>
                 <canvas id="grafica"></canvas>
-                <button class="btn">Ver Reporte</button>
+                <a href="reportes.html" class="btn small" style="display:inline-block;margin-top:10px;text-align:center;text-decoration:none;">Ver Reportes</a>
             </div>
 
-            <!-- MAPA -->
             <div class="box">
-                <h3>Rutas de Hoy</h3>
+                <h3>Rutas del Distrito</h3>
                 <div id="map"></div>
-
                 <div class="legend">
                     <span class="verde"></span> Completada
                     <span class="amarillo"></span> En curso
                     <span class="rojo"></span> Incidente
                 </div>
             </div>
-
         </div>
 
-        <!-- BOTTOM -->
+        <!-- GRID: tareas + incidentes -->
         <div class="grid">
-
             <div class="box">
                 <h3>Tareas Pendientes</h3>
-
                 <p>Inspección de camiones 49%</p>
                 <div class="progress"><div style="width:49%"></div></div>
-
-                <p>Capacitación 60%</p>
+                <p>Capacitación de operadores 60%</p>
                 <div class="progress"><div style="width:60%"></div></div>
+                <p>Mantenimiento de contenedores 30%</p>
+                <div class="progress"><div style="width:30%"></div></div>
             </div>
-
             <div class="box">
                 <h3>Últimos Incidentes</h3>
-
-                <p>🔴 Camión averiado</p>
-                <p>🟡 Tráfico</p>
-                <p>🔴 Contenedor lleno</p>
+                <p>🔴 Camión averiado — Botánico</p>
+                <p>🟡 Tráfico en Av. 27 de Febrero</p>
+                <p>🔴 Contenedor lleno — Circunscripción #1</p>
             </div>
-
         </div>
 
     </main>
 </div>
 
-
+<!-- ✅ CORREGIDO: scripts al final del <body>, en orden correcto, sin duplicados -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="common.js"></script>
+<script src="dashboard.js"></script>
 </body>
 </html>
